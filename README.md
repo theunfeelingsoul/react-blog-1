@@ -43,7 +43,7 @@ User authentication system
 
 ## Author
 
-- Your Name : Victor Njoroge Ngugi
+- Victor Njoroge Ngugi
 - LinkedIn: https://www.linkedin.com/in/victor-njoroge-ngugi/
 - Email: nvngugi@gmail.com
 
