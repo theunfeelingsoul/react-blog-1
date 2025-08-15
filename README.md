@@ -22,12 +22,7 @@ This project is part of my portfolio and will be expanded with more features lik
 ---
 
 ## Demo
-🚀 Live version coming soon: [View on Vercel](#)  
-*(Deployed using Vercel for instant, free hosting)*
-
----
-
-## Screenshots
+🚀 Live version: [React Blog App](https://react-blog-1-ten.vercel.
 ![Blog Homepage](screenshots/homepage.png)
 ![Post Detail](screenshots/postdetail.png)
 
