@@ -5,6 +5,18 @@ This project is part of my portfolio and will be expanded with more features lik
 
 ---
 
+## Demo
+🚀 Live version: [React Blog App] https://react-blog-1-ten.vercel.app
+
+---
+
+## Screenshots
+
+![Blog Homepage](screenshots/homepage.png)
+![Post Detail](screenshots/postdetail.png)
+
+---
+
 ## Features
 - Browse a list of blog posts
 - View individual post details via dynamic routing
@@ -21,17 +33,6 @@ This project is part of my portfolio and will be expanded with more features lik
 
 ---
 
-## Demo
-🚀 Live version: [React Blog App](https://react-blog-1-ten.vercel.
-
----
-
-## Screenshots
-
-![Blog Homepage](screenshots/homepage.png)
-![Post Detail](screenshots/postdetail.png)
-
----
 ## Future Improvements
 
 Add new post form
