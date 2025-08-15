@@ -23,6 +23,11 @@ This project is part of my portfolio and will be expanded with more features lik
 
 ## Demo
 🚀 Live version: [React Blog App](https://react-blog-1-ten.vercel.
+
+---
+
+## Screenshots
+
 ![Blog Homepage](screenshots/homepage.png)
 ![Post Detail](screenshots/postdetail.png)
 
