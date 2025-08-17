@@ -1,16 +1,21 @@
 import { Link } from "react-router-dom";
 import posts from "../data/posts";
+import React from "react";
 
-const Home = () => {
+const Home = ({posts}) => {
     return (
         <div>
-            <h2>Latest Posts</h2>
-            {posts.map((post) => (
-                <div key={post.id} className="post-preview">
-                    <h3><Link to={`/post/${post.id}`}>{post.title}</Link></h3>
-                    <p>{post.excerpt}</p>
-                </div>
-            ))}
+            <h1>Blog Posts</h1>
+            <ul>
+                {posts.map((post) => (
+                    <li key={post.id}>
+                        <Link to={`/post/${post.id}`}>
+                            <strong>{post.title}</strong>
+                        </Link>{" "}
+                        ({post.date})
+                    </li>    
+                ))}
+            </ul>
         </div>
     );
 };

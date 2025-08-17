@@ -1,20 +1,22 @@
+// PostDetail.js
+import React from "react";
 import { useParams } from "react-router-dom";
-import posts from "../data/posts";
 
-const PostDetail = () => {
+function PostDetail({ posts }) {
   const { id } = useParams();
-  const post = posts.find((p) => p.id === parseInt(id));
+  const post = posts.find((p) => p.id.toString() === id);
 
   if (!post) {
-    return <h2>Post not found.</h2>;
+    return <h2>Post not found</h2>;
   }
 
   return (
     <div>
-      <h2>{post.title}</h2>
+      <h1>{post.title}</h1>
+      <p><em>{post.date}</em></p>
       <p>{post.content}</p>
     </div>
   );
-};
+}
 
 export default PostDetail;
