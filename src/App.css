@@ -1,4 +1,4 @@
-.App {
+/*.App {
   text-align: center;
 }
 
@@ -59,4 +59,8 @@ body {
 a {
   color: #007bff;
   text-decoration: none;
+}*/
+
+.margin-right-ten{
+  margin-right: 10px;
 }

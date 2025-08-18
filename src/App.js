@@ -7,26 +7,29 @@ import NotFound from "./pages/NotFound";
 import NewPost from "./pages/NewPost";
 import logo from './logo.svg';
 import './App.css';
+import PostData from "./data/posts";
+import CategoryPosts from "./pages/CategoryPosts";
+
+
 
 function App() {
   // posts state
-  const [posts, setPosts] = useState([
-    {id: 1, title: "Hello World", content: "My first post!", date: "2025-08-16"}
-  ]);
+  const [posts, setPosts] = useState(PostData);
+  // const [posts, setPosts] = useState([]);
+
   return (
     <Router>
       <Header />
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/new">New Post</Link>
-      </nav>
         <div className="container">
+        <div className="row">
           <Routes>
             <Route path="/" element={<Home posts={posts} />}/>
             <Route path="/post/:id" element={<PostDetail posts={posts} />}/>
             <Route path="/new" element={<NewPost setPosts={setPosts}/>} />
+            <Route path="/category/:category" element={<CategoryPosts />} />
             <Route path="*" element={<NotFound />}/>
           </Routes>
+        </div>  
         </div>  
     </Router>
   );
