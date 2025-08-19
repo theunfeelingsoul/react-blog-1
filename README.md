@@ -1,63 +1,44 @@
-# React Blog App
+# React Blog (Frontend-Only)
 
-A simple blog application built with **React** to demonstrate my skills in front-end development, routing, and component-based design.  
-This project is part of my portfolio and will be expanded with more features like forms, Bootstrap styling, and database integration.
-
----
-
-## Demo
-🚀 Live version: [React Blog App] https://react-blog-1-ten.vercel.app
+A simple blog built with **React + Bootstrap**, using `localStorage` for persistence.  
+Designed to showcase React fundamentals without requiring a backend.
 
 ---
 
-## Screenshots
+## ✨ Features
+- Add and view posts (Tech & Business categories)
+- Persistent storage with `localStorage`
+- Posts sorted by newest first
+- Responsive Bootstrap UI
 
-![Blog Homepage](screenshots/homepage.png)
-![Post Detail](screenshots/postdetail.png)
+---
+## 🔗 Live Demo
+👉 [View the app on Vercel](https://react-blog-1-pou2xf2zj-angel-beats-projects.vercel.app/)
 
 ---
 
-## Features
-- Browse a list of blog posts
-- View individual post details via dynamic routing
-- Static data source for easy setup
-- Responsive design ready for future styling
-
----
-
-## Tech Stack
-- **React** (Functional components + Hooks)
-- **React Router** for navigation
-- **JavaScript (ES6+)**
-- **CSS** for basic styling
-
----
-
-## Future Improvements
-
-Add new post form
-Integrate Bootstrap for styling
-Connect to a backend (Node.js/Express) with database (PostgreSQL/MongoDB)
-User authentication system
-
----
-
-## Author
-
-- Victor Njoroge Ngugi
-- LinkedIn: https://www.linkedin.com/in/victor-njoroge-ngugi/
-- Email: nvngugi@gmail.com
-
----
-
-## Installation
-Clone the repository and install dependencies:
-
-
-
+## 🚀 Run Locally
 ```bash
-git clone https://github.com/YOUR_USERNAME/react-blog.git
-cd react-blog
+git clone https://github.com/theunfeelingsoul/react-blog-1.git
+cd react-blog-1
 npm install
 npm start
+Then open http://localhost:3000.
 
+---
+
+## 📌 Next Steps
+-Branch with database integration (SQLite / Node.js)
+-Authentication & admin dashboard
+-Deployment (Netlify / Vercel)
+
+---
+
+## 📸 Demo Screenshots
+
+(add screenshots later for visual impact)
+
+---
+
+## 👤 Author
+Victor — seeking full-stack web development roles.🚀
