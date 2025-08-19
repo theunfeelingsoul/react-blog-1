@@ -1,4 +1,4 @@
-const posts = [
+const starterPosts = [
  {
       id: 1, 
       title: "Meta’s ‘Hypernova’ Glasses", 
@@ -47,4 +47,4 @@ They were originally expected to be **$1000+**. The change  stems in part from t
     }
 ];
 
-export default posts;
+export default starterPosts;

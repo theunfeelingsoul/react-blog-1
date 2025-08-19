@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import posts from "../data/posts";
+// import posts from "../data/posts";
 import { capitalizeFirstLetter } from "../utils/textHelpers";
 
-function Sidebar() {
+function Sidebar({posts}) {
   // unique categories
   // const categories = [...new Set(posts.map((post) => post.cat))];
   const categories = [...new Set(posts.map((post) => post.cat).filter(Boolean))];
@@ -61,5 +61,5 @@ function Sidebar() {
     </div>
   );
 }
-console.log("Sidebar posts:", posts);
+
 export default Sidebar;

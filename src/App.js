@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+//App.js
+import React, {useState, useEffect} from "react";
 import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
@@ -7,15 +8,41 @@ import NotFound from "./pages/NotFound";
 import NewPost from "./pages/NewPost";
 import logo from './logo.svg';
 import './App.css';
-import PostData from "./data/posts";
+import starterPosts from "./data/posts";
 import CategoryPosts from "./pages/CategoryPosts";
-
+console.log("Starter posts:", starterPosts);
 
 
 function App() {
   // posts state
-  const [posts, setPosts] = useState(PostData);
-  // const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+
+  // Load posts from localStorage (only once on first render)
+  useEffect(() => {
+    const storedPosts = localStorage.getItem("posts");
+    const parsed = storedPosts ? JSON.parse(storedPosts) : null;
+
+    if (parsed && parsed.length > 0) {
+      // setPosts(parsed);
+      const sorted = [...parsed].sort((a, b) => b.id - a.id);
+      setPosts(sorted);
+    } else {
+      // setPosts(starterPosts);
+      // localStorage.setItem("posts", JSON.stringify(starterPosts));
+      const sortedStarter = [...starterPosts].sort((a, b) => b.id - a.id);
+      setPosts(sortedStarter);
+      localStorage.setItem("posts", JSON.stringify(sortedStarter));
+    }
+
+ 
+  }, []);
+
+  // Save posts to localStorage whenever they change
+  useEffect(() => {
+    if (posts.length > 0) {
+      localStorage.setItem("posts", JSON.stringify(posts));
+    }
+  }, [posts]);
 
   return (
     <Router>
@@ -25,8 +52,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home posts={posts} />}/>
             <Route path="/post/:id" element={<PostDetail posts={posts} />}/>
-            <Route path="/new" element={<NewPost setPosts={setPosts}/>} />
-            <Route path="/category/:category" element={<CategoryPosts />} />
+            <Route path="/new" element={<NewPost posts={posts} setPosts={setPosts}/>} />
+            <Route path="/category/:category" element={<CategoryPosts posts={posts}/>} />
             <Route path="*" element={<NotFound />}/>
           </Routes>
         </div>  

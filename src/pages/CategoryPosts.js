@@ -1,15 +1,26 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import posts from "../data/posts";
+// import posts from "../data/posts";
 import { capitalizeFirstLetter } from "../utils/textHelpers";
 import Sidebar from "../components/Sidebar";
 
-function CategoryPosts() {
+
+
+function CategoryPosts({posts}) {
   const { category } = useParams();
   const filteredPosts = posts.filter(
     (post) => post.cat === category
   );
 
+  if (filteredPosts.length === 0) {
+    return (
+      <div>
+        <h2>No posts found in {capitalizeFirstLetter(category)}</h2>
+        <Link to="/">Back to Home</Link>
+      </div>
+    );
+  }
+console.log("my log:",posts);
 	return (
 	    <div className="container">
 	    	<div className="row">
@@ -19,13 +30,13 @@ function CategoryPosts() {
 					<hr/>
 			      
 					{filteredPosts.map((post) => (
-						<div className="card mb-3 margin-right-ten">
+						<div key={post.id} className="card mb-3 margin-right-ten">
 							<div className="row g-0">
 
 								{/*Image section*/}
 								<div className="col-md-4">
 								    <img 
-								        src={require(`../asset/blog/${post.image}`)} 
+								        src={`/asset/blog/${post.image}`} 
 								        className="img-fluid rounded-start w-100 h-100 object-fit-cover" 
 								        alt="blog post"
 								    />
