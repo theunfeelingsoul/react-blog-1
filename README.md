@@ -43,11 +43,11 @@ Then open http://localhost:3000.
 
 ## 📌 Next Steps
 Planned improvements and branches:
-
+```
 -💽 Branch with database integration (SQLite + Node.js / Express)
 -🔑 Authentication & admin dashboard
 -🌍 Deployment (Netlify / Vercel)
-
+```
 ---
 
 ## 📸 Demo Screenshots
