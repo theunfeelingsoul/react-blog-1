@@ -3,14 +3,22 @@ import React from "react";
 import ReactLogo from '../asset/react-logo.png';
 import { capitalizeFirstLetter } from "../utils/textHelpers";
 
-const Home = ({ posts }) => {
+const Home = ({ posts, onReset }) => {
     console.log("Home posts:", posts);
     return (
         <div>
-            <h1>Blog Posts</h1>
-            <div className="row g-0">
+            {/*<h1>Blog Posts</h1>*/}
+            <div class="p-3 pb-md-4 mx-auto text-center">
+                <h1 class="display-4 fw-normal text-body-emphasis"> Welcome 🚀 </h1> 
+                <p class="fs-5 text-body-secondary">
+                    The React Blog. A simple, fast, and dynamic blog built with React.  <br/ >
+                    Explore posts, add your own, and reset anytime!
+                </p>
+            </div>
+
+            <div className="row g-0 margin-left-ten offset-md-2">
                 {posts.map((post) => (
-                    <div key={post.id} className="card mb-3 col-md-5 margin-right-ten">
+                    <div key={post.id} className="card mb-3  col-md-5 margin-right-ten">
                         <div className="row g-0">
                             <div className="col-md-4">
                                 <img 

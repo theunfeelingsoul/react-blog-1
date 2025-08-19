@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import "./Header.css";
 import ReactLogo from '../asset/react-logo.png';
+import starterPosts from "../data/posts"; // 👈 import your starter posts
 
-const Header = () =>(
+const Header = ({onReset, posts}) =>{
+    const starterCount = starterPosts.length; // auto-detect length
+    return(
     <div>
         <nav className="navbar bg-dark border-bottom border-body navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
             <div className="container-fluid">
@@ -14,9 +17,7 @@ const Header = () =>(
                   />
                   <span>The React Blog.</span>
                 </Link>    
-              {/*  <span class="navbar-text">
-        <i>An interactive blog built with React</i> |
-      </span>*/}
+              
               <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
               </button>
@@ -34,6 +35,19 @@ const Header = () =>(
                   <li className="nav-item">
                     <Link className="nav-link" to="/new">+ New Post</Link>
                   </li>
+
+                  {/* Reset button visible only if posts > starter */}
+                  {posts.length > starterCount && (
+                    <li className="nav-item">
+                      <Link 
+                        className="nav-link reset-link"
+                        onClick={onReset}
+                      >
+                        Reset Data
+                      </Link>
+                    </li>
+                  )}
+
                   <li className="nav-item dropdown">
                     <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Admin
@@ -54,5 +68,6 @@ const Header = () =>(
     </div>
 
 );
+};
 
 export default Header;

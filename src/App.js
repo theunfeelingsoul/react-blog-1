@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from "react";
 import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import PostDetail from "./pages/PostDetail";
 import NotFound from "./pages/NotFound";
@@ -44,20 +45,29 @@ function App() {
     }
   }, [posts]);
 
+  // ✅ reset function in App
+  const handleReset = () => {
+    setPosts(starterPosts);
+    localStorage.setItem("posts", JSON.stringify(starterPosts));
+  };
+
+  
+
   return (
     <Router>
-      <Header />
+      <Header onReset={handleReset} posts={posts}/>
         <div className="container">
-        <div className="row">
-          <Routes>
-            <Route path="/" element={<Home posts={posts} />}/>
-            <Route path="/post/:id" element={<PostDetail posts={posts} />}/>
-            <Route path="/new" element={<NewPost posts={posts} setPosts={setPosts}/>} />
-            <Route path="/category/:category" element={<CategoryPosts posts={posts}/>} />
-            <Route path="*" element={<NotFound />}/>
-          </Routes>
+          <div className="row">
+            <Routes>
+              <Route path="/" element={<Home posts={posts} onReset={handleReset}  />}/>
+              <Route path="/post/:id" element={<PostDetail posts={posts} />}/>
+              <Route path="/new" element={<NewPost posts={posts} setPosts={setPosts}/>} />
+              <Route path="/category/:category" element={<CategoryPosts posts={posts}/>} />
+              <Route path="*" element={<NotFound />}/>
+            </Routes>
+          </div>  
         </div>  
-        </div>  
+        <Footer />
     </Router>
   );
 }

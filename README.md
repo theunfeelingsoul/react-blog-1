@@ -5,6 +5,11 @@ Designed to showcase React fundamentals without requiring a backend.
 
 ---
 
+## 🔗 Live Demo
+👉 [View the app on Vercel](https://react-blog-1-pou2xf2zj-angel-beats-projects.vercel.app/)
+
+---
+
 ## ✨ Features
 - Add and view posts (Tech & Business categories)
 - Persistent storage with `localStorage`
@@ -12,25 +17,35 @@ Designed to showcase React fundamentals without requiring a backend.
 - Responsive Bootstrap UI
 
 ---
-## 🔗 Live Demo
-👉 [View the app on Vercel](https://react-blog-1-pou2xf2zj-angel-beats-projects.vercel.app/)
+
+## 📂 Project Structure
+src/
+├─ components/ # Reusable UI components
+├─ pages/ # Home, Tech, Business, NewPost
+├─ data/ # Starter dataset
+└─ App.js # Main routing & state management
 
 ---
 
+
 ## 🚀 Run Locally
+Clone the project and install dependencies:
 ```bash
 git clone https://github.com/theunfeelingsoul/react-blog-1.git
 cd react-blog-1
 npm install
 npm start
+```
 Then open http://localhost:3000.
 
 ---
 
 ## 📌 Next Steps
--Branch with database integration (SQLite / Node.js)
--Authentication & admin dashboard
--Deployment (Netlify / Vercel)
+Planned improvements and branches:
+
+-💽 Branch with database integration (SQLite + Node.js / Express)
+-🔑 Authentication & admin dashboard
+-🌍 Deployment (Netlify / Vercel)
 
 ---
 
