@@ -19,11 +19,12 @@ Designed to showcase React fundamentals without requiring a backend.
 ---
 
 ## 📂 Project Structure
-src/
-├─ components/ # Reusable UI components
-├─ pages/ # Home, Tech, Business, NewPost
-├─ data/ # Starter dataset
-└─ App.js # Main routing & state management
+
+📦 src
+┣ 📁 components # Reusable UI components
+┣ 📁 pages # Home, Tech, Business, NewPost
+┣ 📁 data # Starter dataset
+┗ 📄 App.js # Main routing & state management
 
 ---
 
