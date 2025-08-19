@@ -6,7 +6,7 @@ Designed to showcase React fundamentals without requiring a backend.
 ---
 
 ## 🔗 Live Demo
-👉 [View the app on Vercel](https://react-blog-1-pou2xf2zj-angel-beats-projects.vercel.app/)
+👉 [View the app on Vercel](https://react-blog-1-6lcdloac8-angel-beats-projects.vercel.app/)
 
 ---
 
