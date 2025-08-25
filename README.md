@@ -43,7 +43,7 @@ git checkout feature/database-integration
 
 Install both frontend and backend packages:
 
-# From project root
+From project root
 
 ```bash
 cd client
@@ -70,48 +70,40 @@ npm start
 ```
 
 - Backend runs at: http://localhost:5000
-
 - Frontend runs at: http://localhost:3000
 
 ---
 
 ## 🗄️ Database
 
-- Uses better-sqlite3 (embedded database, no extra setup required).
-
-- Database file: server/db/blog.db.
-
+- Uses better-sqlite3 ( embedded database, no extra setup required ).
+- Database file: server/blog.db.
 - Initial schema includes a posts table with fields:
-
--- id
-
--- title
-
--- content
-
--- created_at
+  - id
+  - title
+  - content
+  - created_at
 
 ---
 
 ## 📡 API Endpoints
 
-# Get all posts
+Get all posts
 
 ```bash
 GET /api/posts
 ```
 
-# Get post by ID
+Get post by ID
 
 ```bash
 GET /api/posts/:id
 ```
 
-# Create a new post
-
-```bash
+Create a new post
 POST /api/posts
 
+```bash
 # JSON body:
 {
   "title": "My first post",
@@ -119,7 +111,7 @@ POST /api/posts
 }
 ```
 
-# Delete a post
+Delete a post
 
 ```bash
 DELETE /api/posts/:id
