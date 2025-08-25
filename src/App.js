@@ -1,73 +1,85 @@
-//App.js
-import React, {useState, useEffect} from "react";
-import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Home from "./pages/Home";
-import PostDetail from "./pages/PostDetail";
-import NotFound from "./pages/NotFound";
-import NewPost from "./pages/NewPost";
-import logo from './logo.svg';
-import './App.css';
-import starterPosts from "./data/posts";
-import CategoryPosts from "./pages/CategoryPosts";
-console.log("Starter posts:", starterPosts);
+// App.js
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import PostDetail from './pages/PostDetail';
+import NotFound from './pages/NotFound';
+import CategoryPosts from './pages/CategoryPosts';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
+// 🔹 Admin Pages
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminPosts from './pages/admin/AdminPosts';
+import AdminCreatePost from './pages/admin/AdminCreatePost';
+import AdminEditPost from './pages/admin/AdminEditPost';
 
 function App() {
-  // posts state
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Load posts from localStorage (only once on first render)
+  // 🔹 Fetch posts from backend when the app loads
   useEffect(() => {
-    const storedPosts = localStorage.getItem("posts");
-    const parsed = storedPosts ? JSON.parse(storedPosts) : null;
-
-    if (parsed && parsed.length > 0) {
-      // setPosts(parsed);
-      const sorted = [...parsed].sort((a, b) => b.id - a.id);
-      setPosts(sorted);
-    } else {
-      // setPosts(starterPosts);
-      // localStorage.setItem("posts", JSON.stringify(starterPosts));
-      const sortedStarter = [...starterPosts].sort((a, b) => b.id - a.id);
-      setPosts(sortedStarter);
-      localStorage.setItem("posts", JSON.stringify(sortedStarter));
-    }
-
- 
+    fetch('http://localhost:5000/posts') // adjust port if needed
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error fetching posts:', err);
+        setLoading(false);
+      });
   }, []);
-
-  // Save posts to localStorage whenever they change
-  useEffect(() => {
-    if (posts.length > 0) {
-      localStorage.setItem("posts", JSON.stringify(posts));
-    }
-  }, [posts]);
-
-  // ✅ reset function in App
-  const handleReset = () => {
-    setPosts(starterPosts);
-    localStorage.setItem("posts", JSON.stringify(starterPosts));
-  };
-
-  
 
   return (
     <Router>
-      <Header onReset={handleReset} posts={posts}/>
-        <div className="container">
-          <div className="row">
-            <Routes>
-              <Route path="/" element={<Home posts={posts} onReset={handleReset}  />}/>
-              <Route path="/post/:id" element={<PostDetail posts={posts} />}/>
-              <Route path="/new" element={<NewPost posts={posts} setPosts={setPosts}/>} />
-              <Route path="/category/:category" element={<CategoryPosts posts={posts}/>} />
-              <Route path="*" element={<NotFound />}/>
-            </Routes>
-          </div>  
-        </div>  
-        <Footer />
+      <Header posts={posts} />
+      <div className="wrapper flex-grow-1">
+        <main className="content">
+          <div className="container steve">
+            <div className="row">
+              <Routes>
+                {/* Public side */}
+                <Route
+                  path="/"
+                  element={<Home posts={posts} loading={loading} />}
+                />
+                <Route
+                  path="/post/:id"
+                  element={<PostDetail posts={posts} />}
+                />
+                <Route
+                  path="/category/:category"
+                  element={<CategoryPosts posts={posts} />}
+                />
+
+                {/* Admin side */}
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route
+                  path="/admin/posts"
+                  element={<AdminPosts posts={posts} setPosts={setPosts} />}
+                />
+                <Route
+                  path="/admin/new"
+                  element={
+                    <AdminCreatePost posts={posts} setPosts={setPosts} />
+                  }
+                />
+                <Route
+                  path="/admin/edit/:id"
+                  element={<AdminEditPost posts={posts} setPosts={setPosts} />}
+                />
+
+                {/* Catch-all */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
+          </div>
+        </main>
+      </div>
+      <Footer />
     </Router>
   );
 }

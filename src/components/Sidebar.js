@@ -1,13 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 // import posts from "../data/posts";
-import { capitalizeFirstLetter } from "../utils/textHelpers";
+import { capitalizeFirstLetter } from '../utils/textHelpers';
 
-function Sidebar({posts}) {
+function Sidebar({ posts }) {
   // unique categories
-  // const categories = [...new Set(posts.map((post) => post.cat))];
-  const categories = [...new Set(posts.map((post) => post.cat).filter(Boolean))];
-
+  // const categories = [...new Set(posts.map((post) => post.category))];
+  const categories = [
+    ...new Set(posts.map((post) => post.category).filter(Boolean)),
+  ];
 
   // latest posts (sorted by date desc)
   const latestPosts = [...posts]
@@ -26,9 +27,12 @@ function Sidebar({posts}) {
           <div className="card-body">
             <ul className="list-group list-group-flush">
               {categories.length > 0 ? (
-                categories.map((cat, index) => (
-                  <li key={`${cat}-${index}`} className="list-group-item">
-                    <Link to={`/category/${cat}`}> {capitalizeFirstLetter(cat)} </Link>
+                categories.map((category, index) => (
+                  <li key={`${category}-${index}`} className="list-group-item">
+                    <Link to={`/category/${category}`}>
+                      {' '}
+                      {capitalizeFirstLetter(category)}{' '}
+                    </Link>
                   </li>
                 ))
               ) : (
