@@ -7,7 +7,7 @@ Unlike the static version on `main`/`master`, this version uses an **Express bac
 
 ## 🚀 Tech Stack
 
-- **Frontend:** React (CRA)
+- **Frontend:** React
 - **Backend:** Express.js
 - **Database:** better-sqlite3
 - **API Testing:** cURL / fetch
@@ -76,48 +76,17 @@ npm start
 
 ## 🗄️ Database
 
-- Uses better-sqlite3 ( embedded database, no extra setup required ).
+- Uses better-sqlite3 **( embedded database, no extra setup required ).**
 - Database file: server/blog.db.
-- Initial schema includes a posts table with fields:
-  - id
-  - title
-  - content
-  - date
-  - image
-  - category
 
 ---
 
 ## 📡 API Endpoints
 
-- Get all posts
-
-```bash
-GET /api/posts
-```
-
-- Get post by ID
-
-```bash
-GET /api/posts/:id
-```
-
-- Create a new post
-  POST /api/posts
-
-```bash
-# JSON body:
-{
-  "title": "My first post",
-  "content": "Hello from SQLite!"
-}
-```
-
-- Delete a post
-
-```bash
-DELETE /api/posts/:id
-```
+- `GET /api/posts` — Get all posts
+- `GET /api/posts/:id` — Get a single post
+- `POST /api/posts` — Create a new post
+- `DELETE /api/posts/:id` — Delete a post
 
 ---
 
@@ -131,8 +100,8 @@ If you want to deploy, you’ll need to host the frontend (e.g., Vercel) and the
 
 ## 📌 Branch Info
 
-master → Static posts version.
+🔹**master** → Static posts version.
 
-feature/database-integration → SQLite-powered fullstack version.
+🔹**feature/database-integration** → SQLite-powered fullstack version.
 
 ---
