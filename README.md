@@ -1,60 +1,144 @@
-# React Blog (Frontend-Only)
+# React Blog (Database Integrated Version)
 
-A simple blog built with **React + Bootstrap**, using `localStorage` for persistence.  
-Designed to showcase React fundamentals without requiring a backend.
-
----
-
-## 🔗 Live Demo
-👉 [View the app on Vercel](https://react-blog-1-6lcdloac8-angel-beats-projects.vercel.app/)
+This branch (`feature/database-integration`) is an upgraded version of the **React Blog** project.  
+Unlike the static version on `main`/`master`, this version uses an **Express backend** with a **SQLite database** for storing and fetching blog posts.
 
 ---
 
-## ✨ Features
-- Add and view posts (Tech & Business categories)
-- Persistent storage with `localStorage`
-- Posts sorted by newest first
-- Responsive Bootstrap UI
+## 🚀 Tech Stack
+
+- **Frontend:** React (CRA)
+- **Backend:** Express.js
+- **Database:** better-sqlite3
+- **API Testing:** cURL / fetch
 
 ---
 
 ## 📂 Project Structure
+
 ```
-📦 src
-┣ 📁 components # Reusable UI components
-┣ 📁 pages # Home, Tech, Business, NewPost
-┣ 📁 data # Starter dataset
-┗ 📄 App.js # Main routing & state management
+react-blog-1/
+│
+├── client/ # React frontend
+├── server/ # Express backend
+│ ├── db/ # SQLite database + queries
+│ └── routes/ # API routes
+└── README.md
 ```
+
 ---
 
+## ⚙️ Setup Instructions
 
-## 🚀 Run Locally
-Clone the project and install dependencies:
+### 1. Clone the repo and checkout this branch
+
 ```bash
 git clone https://github.com/theunfeelingsoul/react-blog-1.git
 cd react-blog-1
+git checkout feature/database-integration
+
+```
+
+### 2. Install dependencies
+
+Install both frontend and backend packages:
+
+# From project root
+
+```bash
+cd client
 npm install
+
+cd ../server
+npm install
+```
+
+### 3. Start the servers
+
+In one terminal (backend):
+
+```bash
+cd server
 npm start
 ```
-Then open http://localhost:3000.
 
----
+In another terminal (frontend):
 
-## 📌 Next Steps
-Planned improvements and branches:
+```bash
+cd client
+npm start
 ```
--💽 Branch with database integration (SQLite + Node.js / Express)
--🔑 Authentication & admin dashboard
--🌍 Deployment (Netlify / Vercel)
+
+- Backend runs at: http://localhost:5000
+
+- Frontend runs at: http://localhost:3000
+
+---
+
+## 🗄️ Database
+
+- Uses better-sqlite3 (embedded database, no extra setup required).
+
+- Database file: server/db/blog.db.
+
+- Initial schema includes a posts table with fields:
+
+-- id
+
+-- title
+
+-- content
+
+-- created_at
+
+---
+
+## 📡 API Endpoints
+
+# Get all posts
+
+```bash
+GET /api/posts
 ```
+
+# Get post by ID
+
+```bash
+GET /api/posts/:id
+```
+
+# Create a new post
+
+```bash
+POST /api/posts
+
+# JSON body:
+{
+  "title": "My first post",
+  "content": "Hello from SQLite!"
+}
+```
+
+# Delete a post
+
+```bash
+DELETE /api/posts/:id
+```
+
 ---
 
-## 📸 Demo Screenshots
+## 📝 Notes
 
-(add screenshots later for visual impact)
+This branch is for demo/testing database integration.
+
+If you want to deploy, you’ll need to host the frontend (e.g., Vercel) and the backend (e.g., Render, Railway).
 
 ---
 
-## 👤 Author
-Victor — seeking full-stack web development roles.🚀
+## 📌 Branch Info
+
+Main/master → Static posts version.
+
+feature/database-integration → SQLite-powered fullstack version.
+
+---
