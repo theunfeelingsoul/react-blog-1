@@ -82,26 +82,28 @@ npm start
   - id
   - title
   - content
-  - created_at
+  - date
+  - image
+  - category
 
 ---
 
 ## 📡 API Endpoints
 
-Get all posts
+- Get all posts
 
 ```bash
 GET /api/posts
 ```
 
-Get post by ID
+- Get post by ID
 
 ```bash
 GET /api/posts/:id
 ```
 
-Create a new post
-POST /api/posts
+- Create a new post
+  POST /api/posts
 
 ```bash
 # JSON body:
@@ -111,7 +113,7 @@ POST /api/posts
 }
 ```
 
-Delete a post
+- Delete a post
 
 ```bash
 DELETE /api/posts/:id
@@ -129,7 +131,7 @@ If you want to deploy, you’ll need to host the frontend (e.g., Vercel) and the
 
 ## 📌 Branch Info
 
-Main/master → Static posts version.
+master → Static posts version.
 
 feature/database-integration → SQLite-powered fullstack version.
 
