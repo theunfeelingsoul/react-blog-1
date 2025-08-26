@@ -19,7 +19,7 @@ const db = new Database(DB_FILE);
 console.log('Using SQLite file at:', DB_FILE);
 
 // Middleware
-app.use(cors());
+//app.use(cors());
 app.use(bodyParser.json());
 
 // Init Database
