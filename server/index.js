@@ -5,14 +5,25 @@ const Database = require('better-sqlite3');
 
 // Init Express
 const app = express();
-const PORT = 5000;
+// const PORT = 5000; // for local sever
+
+/* 
+  For Render server
+  Takes the PORT environment variable set by Render or defaults to 5000 for local development
+*/
+const PORT = process.env.PORT || 5000;
+
+const path = require('path');
+const DB_FILE = process.env.DB_FILE || path.join(__dirname, 'blog.db');
+const db = new Database(DB_FILE);
+console.log('Using SQLite file at:', DB_FILE);
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
 // Init Database
-const db = new Database('./blog.db');
+//const db = new Database('./blog.db');
 
 // Create table if not exists
 db.prepare(
