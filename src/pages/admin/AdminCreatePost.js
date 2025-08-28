@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './_AdminSidebar';
+import { createPost } from '../../api'; // ✅ import helper
 
 function NewPost({ setPosts }) {
   const [formData, setFormData] = useState({
@@ -24,17 +25,7 @@ function NewPost({ setPosts }) {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/posts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to save post');
-      }
-
-      const savedPost = await response.json();
+      const savedPost = await createPost(formData);
 
       // Update frontend state so UI refreshes
       setPosts((prevPosts) => [savedPost, ...prevPosts]);

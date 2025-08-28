@@ -1,115 +1,121 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const Database = require('better-sqlite3');
+import dotenv from 'dotenv';
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import pool from './db.js'; // 👈 use our db.js
+
+//dotenv.config(); // load .env first
+// Always load from the /server folder
+dotenv.config({ path: './server/.env' });
 
 // Init Express
 const app = express();
-// const PORT = 5000; // for local sever
-
-/* 
-  For Render server
-  Takes the PORT environment variable set by Render or defaults to 5000 for local development
-*/
 const PORT = process.env.PORT || 5000;
 
-const path = require('path');
-const DB_FILE = process.env.DB_FILE || path.join(__dirname, 'blog.db');
-const db = new Database(DB_FILE);
-console.log('Using SQLite file at:', DB_FILE);
-
 // Middleware
-//app.use(cors());
+app.use(cors());
 app.use(bodyParser.json());
 
-// Init Database
-//const db = new Database('./blog.db');
-
-// Create table if not exists
-db.prepare(
-  `
-  CREATE TABLE IF NOT EXISTS posts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    content TEXT NOT NULL,
-    date TEXT DEFAULT (datetime('now', 'localtime')),
-    image TEXT,
-    category TEXT
-  )
-`
-).run();
-
-// Routes
-// 1. Get all posts
-app.get('/posts', (req, res) => {
-  const posts = db.prepare('SELECT * FROM posts ORDER BY id DESC').all();
-  res.json(posts);
-});
-
-// 2. Get single post
-app.get('/posts/:id', (req, res) => {
-  const post = db
-    .prepare('SELECT * FROM posts WHERE id = ?')
-    .get(req.params.id);
-  if (post) {
-    res.json(post);
-  } else {
-    res.status(404).json({ error: 'Post not found' });
-  }
-});
-
-// 3. Create a new post
-app.post('/posts', (req, res) => {
-  const { title, content, image, category } = req.body;
-
-  if (!title || !content) {
-    return res.status(400).json({ error: 'Title and content are required' });
-  }
-
-  const stmt = db.prepare(
-    'INSERT INTO posts (title, content, image, category) VALUES (?, ?, ?, ?)'
-  );
-  const result = stmt.run(title, content, image, category);
-
-  res.status(201).json({ id: result.lastInsertRowid, title, content });
-});
-
-// 4. Delete a post
-app.delete('/posts/:id', (req, res) => {
-  const { id } = req.params;
-  const stmt = db.prepare('DELETE FROM posts WHERE id = ?');
-  const result = stmt.run(req.params.id);
-
-  // if (result.changes > 0) {
-  //   //res.json({ success: true });
-  //   res.json({ changes: info.changes, message: 'Post deleted!' });
-  // } else {
-  //   res.status(404).json({ error: 'Post not found' });
-  // }
-
+// --- Create table if not exists (run once on startup) ---
+(async () => {
   try {
-    stmt.run(id);
-    res.json({ message: 'Post deleted successfully' });
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS posts (
+        id SERIAL PRIMARY KEY,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        date TIMESTAMP DEFAULT NOW(),
+        image TEXT,
+        category TEXT
+      )
+    `);
+    console.log('✅ Table ready');
+  } catch (err) {
+    console.error('❌ Error creating table:', err);
+  }
+})();
+
+// Test DB connection
+pool
+  .connect()
+  .then((client) => {
+    console.log('✅ Connected to PostgreSQL!');
+    client.release();
+  })
+  .catch((err) => console.error('❌ Database connection failed:', err.stack));
+
+// --- ROUTES ---
+// 1. Get all posts
+app.get('/posts', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM posts ORDER BY id DESC');
+    res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// --- UPDATE (ignore date) ---
-app.put('/posts/:id', (req, res) => {
-  const { id } = req.params;
-  const { title, content, image, category } = req.body; // 👈 no date here
-
-  const stmt = db.prepare(`
-    UPDATE posts 
-    SET title = ?, content = ?, image = ?, category = ?
-    WHERE id = ?
-  `);
-
+// 2. Get single post
+app.get('/posts/:id', async (req, res) => {
   try {
-    const result = stmt.run(title, content, image, category, id);
+    const result = await pool.query('SELECT * FROM posts WHERE id = $1', [
+      req.params.id,
+    ]);
+    if (result.rows.length > 0) {
+      res.json(result.rows[0]);
+    } else {
+      res.status(404).json({ error: 'Post not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-    if (result.changes > 0) {
+// 3. Create a new post
+app.post('/posts', async (req, res) => {
+  const { title, content, image, category } = req.body;
+  if (!title || !content) {
+    return res.status(400).json({ error: 'Title and content are required' });
+  }
+  try {
+    const result = await pool.query(
+      'INSERT INTO posts (title, content, image, category) VALUES ($1, $2, $3, $4) RETURNING *',
+      [title, content, image, category]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 4. Delete a post
+app.delete('/posts/:id', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'DELETE FROM posts WHERE id = $1 RETURNING *',
+      [req.params.id]
+    );
+    if (result.rowCount > 0) {
+      res.json({ message: 'Post deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'Post not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 5. Update a post
+app.put('/posts/:id', async (req, res) => {
+  const { title, content, image, category } = req.body;
+  try {
+    const result = await pool.query(
+      `UPDATE posts 
+       SET title = $1, content = $2, image = $3, category = $4 
+       WHERE id = $5 RETURNING *`,
+      [title, content, image, category, req.params.id]
+    );
+    if (result.rowCount > 0) {
       res.json({ message: 'Post updated successfully' });
     } else {
       res.status(404).json({ error: 'Post not found' });
@@ -119,48 +125,36 @@ app.put('/posts/:id', (req, res) => {
   }
 });
 
-// --- RESET + SEED (one call) ---
-app.post('/reset-seed', (req, res) => {
+// 6. Reset + seed
+app.post('/reset-seed', async (req, res) => {
   try {
-    // Step 1: Delete all posts
-    db.prepare('DELETE FROM posts').run();
-
-    // Step 2: Reset autoincrement counter
-    db.prepare('DELETE FROM sqlite_sequence WHERE name = "posts"').run();
-
-    // Step 3: Insert fresh sample posts
-    const stmt = db.prepare(
-      'INSERT INTO posts (title, content, image, category) VALUES (?, ?, ?, ?)'
-    );
-
+    await pool.query('TRUNCATE posts RESTART IDENTITY');
     const samplePosts = [
-      {
-        title: 'Fresh Start 🌱',
-        content: 'All old posts cleared. This is a new beginning!',
-        date: '2024-01-01',
-        image: 'fresh.png',
-        category: 'general',
-      },
-      {
-        title: 'Tech Reset',
-        content: 'Exploring what’s next in technology after a clean slate.',
-        date: '2024-01-01',
-        image: 'tech.png',
-        category: 'technology',
-      },
-      {
-        title: 'Business Reset',
-        content: 'A new cycle, a new market outlook.',
-        date: '2024-01-01',
-        image: 'business.png',
-        category: 'business',
-      },
+      [
+        'Fresh Start 🌱',
+        'All old posts cleared. This is a new beginning!',
+        'fresh.png',
+        'general',
+      ],
+      [
+        'Tech Reset',
+        'Exploring what’s next in technology after a clean slate.',
+        'tech.png',
+        'technology',
+      ],
+      [
+        'Business Reset',
+        'A new cycle, a new market outlook.',
+        'business.png',
+        'business',
+      ],
     ];
-
     for (const post of samplePosts) {
-      stmt.run(post.title, post.content, post.image, post.category);
+      await pool.query(
+        'INSERT INTO posts (title, content, image, category) VALUES ($1, $2, $3, $4)',
+        post
+      );
     }
-
     res.json({
       message: 'Database reset and seeded successfully',
       count: samplePosts.length,

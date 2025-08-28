@@ -8,6 +8,7 @@ import PostDetail from './pages/PostDetail';
 import NotFound from './pages/NotFound';
 import CategoryPosts from './pages/CategoryPosts';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { getPosts } from './api'; // ✅ use API helper
 
 // 🔹 Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -21,16 +22,10 @@ function App() {
 
   // 🔹 Fetch posts from backend when the app loads
   useEffect(() => {
-    fetch('http://localhost:5000/posts') // adjust port if needed
-      .then((res) => res.json())
-      .then((data) => {
-        setPosts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('Error fetching posts:', err);
-        setLoading(false);
-      });
+    getPosts()
+      .then((data) => setPosts(data))
+      .catch((err) => console.error('Error fetching posts:', err))
+      .finally(() => setLoading(false));
   }, []);
 
   return (

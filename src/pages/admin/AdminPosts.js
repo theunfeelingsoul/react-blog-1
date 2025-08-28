@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from './_AdminSidebar';
+import { getPosts, deletePost } from '../../api'; // ✅ import helpers
 
 function PostsTable() {
   const [posts, setPosts] = useState([]); //
@@ -9,10 +10,9 @@ function PostsTable() {
 
   // Fetch posts when component mounts
   useEffect(() => {
-    fetch('http://localhost:5000/posts') // adjust port if needed
-      .then((res) => res.json())
-      .then((data) => setPosts(data))
-      .catch((err) => console.error('Error fetching posts:', err));
+    getPosts()
+      .then(setPosts)
+      .catch((err) => console.error('Error:', err));
   }, []);
 
   // Handle delete
@@ -23,17 +23,10 @@ function PostsTable() {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/posts/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (res.ok) {
-        setPosts((prev) => prev.filter((post) => post.id !== id));
-        setMessage('✅ Post deleted successfully');
-        setTimeout(() => setMessage(''), 3000); // clear message after 3s
-      } else {
-        setMessage('❌ Failed to delete post');
-      }
+      await deletePost(id);
+      setPosts((prev) => prev.filter((post) => post.id !== id));
+      setMessage('✅ Post deleted successfully');
+      setTimeout(() => setMessage(''), 3000);
     } catch (err) {
       console.error('Delete error:', err);
       setMessage('❌ Error deleting post');

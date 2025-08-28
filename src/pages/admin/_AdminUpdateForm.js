@@ -1,6 +1,7 @@
 // UpdateForm.js
 import React, { useState, useEffect } from 'react';
 import Sidebar from './_AdminSidebar';
+import { updatePost } from '../../api'; // ✅ import helper
 
 function UpdateForm({ post, onClose, onUpdated }) {
   const [formData, setFormData] = useState({
@@ -33,18 +34,8 @@ function UpdateForm({ post, onClose, onUpdated }) {
     e.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:5000/posts/${post.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (!res.ok) throw new Error('Failed to update post');
-
-      const data = await res.json();
-      if (data) {
-        onUpdated({ ...formData, id: post.id });
-      }
+      await updatePost(post.id, formData);
+      onUpdated({ ...formData, id: post.id });
     } catch (err) {
       console.error('Update failed:', err);
     }

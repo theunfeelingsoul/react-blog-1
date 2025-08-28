@@ -1,28 +1,33 @@
 import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { capitalizeFirstLetter } from '../utils/textHelpers';
+import { getPosts } from '../api';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   // Fetch posts from backend
+  //   fetch('http://localhost:5000/posts')
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setPosts(data);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error('Error fetching posts:', err);
+  //       setLoading(false);
+  //     });
+  // }, []);
+  console.log('getPosts():', getPosts());
   useEffect(() => {
-    // Fetch posts from backend
-    fetch('http://localhost:5000/posts')
-      .then((res) => res.json())
-      .then((data) => {
-        setPosts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('Error fetching posts:', err);
-        setLoading(false);
-      });
+    getPosts().then(setPosts);
   }, []);
 
-  if (loading) {
-    return <p className="text-center mt-5">Loading posts...</p>;
-  }
+  // if (loading) {
+  //   return <p className="text-center mt-5">Loading posts...</p>;
+  // }
 
   return (
     <div>
