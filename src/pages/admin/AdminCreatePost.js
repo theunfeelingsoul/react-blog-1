@@ -1,15 +1,15 @@
-// NewPost.js
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Sidebar from './_AdminSidebar';
-import { createPost } from '../../api'; // ✅ import helper
+// ./src/pages/admin/AdminCreatePost.js
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Sidebar from "./_AdminSidebar";
+import { createPost } from "../../api"; // ✅ import helper
 
 function NewPost({ setPosts }) {
   const [formData, setFormData] = useState({
-    title: '',
-    content: '',
-    image: '',
-    category: '',
+    title: "",
+    content: "",
+    image: "",
+    category: "",
   });
 
   const navigate = useNavigate();
@@ -32,17 +32,17 @@ function NewPost({ setPosts }) {
 
       // Reset form
       setFormData({
-        title: '',
-        content: '',
-        image: '',
-        category: '',
+        title: "",
+        content: "",
+        image: "",
+        category: "",
       });
 
       // Redirect home
-      navigate('/');
+      navigate("/");
     } catch (err) {
       console.error(err);
-      alert('Error saving post. Check server.');
+      alert("Error saving post. Check server.");
     }
   };
 
@@ -132,7 +132,7 @@ function NewPost({ setPosts }) {
                   <button
                     type="button"
                     className="btn btn-secondary"
-                    onClick={() => navigate('/admin/posts')}
+                    onClick={() => navigate("/admin/posts")}
                   >
                     ❌ Cancel
                   </button>

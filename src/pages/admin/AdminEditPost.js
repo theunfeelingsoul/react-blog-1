@@ -1,32 +1,139 @@
-// AdminEditPost.js
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import UpdateForm from './_AdminUpdateForm'; // keep your existing UpdateForm in the same folder
+// ./src/pages/admin/AdminEditPost.js
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { getPost, updatePost } from "../../api";
+import Sidebar from "./_AdminSidebar";
 
-function AdminEditPost({ posts, setPosts }) {
-  const { id } = useParams(); // Get the post ID from URL
+function AdminEditPost() {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [category, setCategory] = useState("");
+  const [image, setImage] = useState("");
+  const [error, setError] = useState("");
 
-  // Find the post from App.js state
-  const post = posts.find((p) => p.id === Number(id));
+  useEffect(() => {
+    getPost(id)
+      .then((data) => {
+        setTitle(data.title);
+        setContent(data.content);
+        setCategory(data.category);
+        setImage(data.image);
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setError("❌ Failed to load post");
+      });
+  }, [id]);
 
-  const handleUpdated = (updatedPost) => {
-    // Update posts state in App.js
-    setPosts((prev) =>
-      prev.map((p) => (p.id === updatedPost.id ? updatedPost : p))
-    );
-    navigate('/admin/posts'); // Redirect after update
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      await updatePost(id, { title, content, image, category });
+      navigate("/admin/posts");
+    } catch (err) {
+      console.error("Update error:", err);
+      setError("❌ Failed to update post");
+    }
   };
 
-  // If post not found (still loading), show a loader
-  if (!post) return <p>Loading...</p>;
-
   return (
-    <UpdateForm
-      post={post}
-      onUpdated={handleUpdated}
-      onClose={() => navigate('/admin/posts')}
-    />
+    <div>
+      <div className="container mt-4">
+        <div className="row">
+          <div className="col-md-2 admin-sidebar">
+            <Sidebar />
+          </div>
+          <div className="col-md-10">
+            <h3>📝 Edit Post</h3>
+            <hr />
+            <br />
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <form className="row g-3" onSubmit={handleSubmit}>
+              <div className="row">
+                <div className="col-md-4">
+                  <div className="col">
+                    <label className="form-label">Feature Image</label>
+                    <select
+                      className="form-select"
+                      name="image"
+                      value={image}
+                      onChange={(e) => setImage(e.target.value)}
+                    >
+                      <option value="">Choose...</option>
+                      <option>meta.png</option>
+                      <option>android.png</option>
+                      <option>leader.png</option>
+                      <option>gemini.png</option>
+                      <option>bizidea.png</option>
+                      <option>googlecloud.png</option>
+                    </select>
+                  </div>
+                  <div className="col">
+                    <label className="form-label">Category</label>
+                    <select
+                      className="form-select"
+                      name="category"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                    >
+                      <option value="">Choose...</option>
+                      <option>technology</option>
+                      <option>business</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="col-md-8">
+                  <div className="col">
+                    <label className="form-label">Title :</label>
+                    <input
+                      type="text"
+                      name="title"
+                      className="form-control"
+                      placeholder=""
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div className="col">
+                    <label className="form-label">Post Content</label>
+                    <textarea
+                      className="form-control"
+                      rows="6"
+                      name="content"
+                      placeholder="Write your post here..."
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="col-12">
+                <div className="d-flex justify-content-between">
+                  <button type="submit" className="btn btn-success">
+                    💾 Update
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => navigate("/admin/posts")}
+                  >
+                    ❌ Cancel
+                  </button>
+                </div>
+              </div>
+              <hr />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

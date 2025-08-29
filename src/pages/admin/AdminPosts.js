@@ -1,45 +1,39 @@
-// AdminPost.js
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Sidebar from './_AdminSidebar';
-import { getPosts, deletePost } from '../../api'; // ✅ import helpers
+// ./src/pages/admin/AdminPosts.js
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import Sidebar from "./_AdminSidebar";
+import { getPosts, deletePost } from "../../api"; // central API helpers
 
-function PostsTable() {
-  const [posts, setPosts] = useState([]); //
-  const [message, setMessage] = useState('');
+function AdminPosts() {
+  const [posts, setPosts] = useState([]);
+  const [message, setMessage] = useState("");
 
-  // Fetch posts when component mounts
   useEffect(() => {
     getPosts()
       .then(setPosts)
-      .catch((err) => console.error('Error:', err));
+      .catch((err) => console.error("Error fetching posts:", err));
   }, []);
 
-  // Handle delete
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      'Are you sure you want to delete this post?'
-    );
-    if (!confirmDelete) return;
+    if (!window.confirm("Are you sure you want to delete this post?")) return;
 
     try {
       await deletePost(id);
-      setPosts((prev) => prev.filter((post) => post.id !== id));
-      setMessage('✅ Post deleted successfully');
-      setTimeout(() => setMessage(''), 3000);
+      setPosts((prev) => prev.filter((p) => p.id !== id));
+      setMessage("✅ Post deleted successfully");
+      setTimeout(() => setMessage(""), 3000);
     } catch (err) {
-      console.error('Delete error:', err);
-      setMessage('❌ Error deleting post');
+      console.error("Delete error:", err);
+      setMessage("❌ Error deleting post");
     }
   };
 
-  // Format date nicely
   const formatDate = (dateString) => {
-    if (!dateString) return '';
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
+    if (!dateString) return "";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
@@ -49,12 +43,10 @@ function PostsTable() {
         <div className="col-md-2 admin-sidebar">
           <Sidebar />
         </div>
-
         <div className="col-md-10">
           <h2>Manage Posts</h2>
           <hr />
           {message && <div className="alert alert-info">{message}</div>}
-
           <table className="table table-bordered table-striped">
             <thead>
               <tr>
@@ -62,15 +54,15 @@ function PostsTable() {
                 <th>Title</th>
                 <th>Date</th>
                 <th>Content</th>
-                <th>image</th>
-                <th>category</th>
+                <th>Image</th>
+                <th>Category</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {posts.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="text-center">
+                  <td colSpan="7" className="text-center">
                     No posts found
                   </td>
                 </tr>
@@ -85,7 +77,7 @@ function PostsTable() {
                     <td>{post.category}</td>
                     <td>
                       <Link
-                        to={`/admin/edit/${post.id}`}
+                        to={`/admin/posts/edit/${post.id}`}
                         className="btn btn-sm btn-warning me-2"
                       >
                         Edit
@@ -104,9 +96,8 @@ function PostsTable() {
           </table>
         </div>
       </div>
-      {/* End .row */}
     </div>
   );
 }
 
-export default PostsTable;
+export default AdminPosts;

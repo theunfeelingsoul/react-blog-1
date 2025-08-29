@@ -6,8 +6,13 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import PostDetail from "./pages/PostDetail";
 import NotFound from "./pages/NotFound";
-import NewPost from "./pages/NewPost";
 import CategoryPosts from "./pages/CategoryPosts";
+
+// ✅ Import admin pages
+import AdminPosts from "./pages/admin/AdminPosts";
+import AdminEditPost from "./pages/admin/AdminEditPost";
+import AdminAddPost from "./pages/admin/AdminAddPost";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import "./App.css";
 
 function App() {
@@ -15,7 +20,7 @@ function App() {
 
   // Load posts from backend (SQLite)
   useEffect(() => {
-    fetch("http://localhost:5000/posts")
+    fetch("http://localhost:5000/api/posts")
       .then((res) => res.json())
       .then((data) => {
         // sort newest first
@@ -46,20 +51,34 @@ function App() {
       <div className="container">
         <div className="row">
           <Routes>
+            {/* Public pages */}
             <Route
               path="/"
               element={<Home posts={posts} onReset={handleReset} />}
             />
             <Route path="/post/:id" element={<PostDetail posts={posts} />} />
-            <Route
-              path="/new"
-              element={<NewPost posts={posts} setPosts={setPosts} />}
-            />
+
             <Route
               path="/category/:category"
               element={<CategoryPosts posts={posts} />}
             />
             <Route path="*" element={<NotFound />} />
+
+            {/* Admin pages */}
+            <Route
+              path="/admin/posts"
+              element={<AdminPosts posts={posts} setPosts={setPosts} />}
+            />
+            <Route
+              path="/admin/posts/edit/:id"
+              element={<AdminEditPost posts={posts} setPosts={setPosts} />}
+            />
+            <Route
+              path="/admin/posts/add"
+              element={<AdminAddPost setPosts={setPosts} />}
+            />
+
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
           </Routes>
         </div>
       </div>

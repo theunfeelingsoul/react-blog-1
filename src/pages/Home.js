@@ -1,25 +1,36 @@
 import { Link } from "react-router-dom";
-import React from "react";
-import ReactLogo from "../asset/react-logo.png";
+import React, { useEffect, useState } from "react";
 import { capitalizeFirstLetter } from "../utils/textHelpers";
 
-const Home = ({ posts, onReset }) => {
-  console.log("Home posts:", posts);
+const Home = () => {
+  const [posts, setPosts] = useState([]);
+
+  // fetch posts on mount
+  useEffect(() => {
+    fetch("http://localhost:5000/api/posts")
+      .then((res) => res.json())
+      .then((data) => setPosts(data))
+      .catch((err) => console.error("Error fetching posts:", err));
+  }, []);
+
   return (
     <div>
-      {/*<h1>Blog Posts</h1>*/}
-      <div class="p-3 pb-md-4 mx-auto text-center">
-        <h1 class="display-4 fw-normal text-body-emphasis"> Welcome 🚀 </h1>
-        <p class="fs-5 text-body-secondary">
-          The React Blog. A simple, fast, and dynamic blog built with React.{" "}
+      <div className="p-3 pb-md-4 mx-auto text-center">
+        <h1 className="display-4 fw-normal text-body-emphasis"> Welcome 🚀 </h1>
+        <p className="fs-5 text-body-secondary">
+          The React Blog is a simple, fast, and dynamic blog built with React
+          and powered by PostgreSQL.
           <br />
-          Explore posts, add your own, and reset anytime!
+          Explore posts, add your own, and reset anytime — all backed
+          <br />
+          by a reliable relational database for smooth performance and
+          scalability.
         </p>
       </div>
 
       <div className="row g-0 margin-left-ten offset-md-2">
         {posts.map((post) => (
-          <div key={post.id} className="card mb-3  col-md-5 margin-right-ten">
+          <div key={post.id} className="card mb-3 col-md-5 margin-right-ten">
             <div className="row g-0">
               <div className="col-md-4">
                 <img
@@ -35,14 +46,14 @@ const Home = ({ posts, onReset }) => {
                       <strong>{post.title}</strong>
                     </Link>
                   </h5>
-                  <p className="card-text">
+                  {/* <p className="card-text">
                     {post.content.length > 50
                       ? post.content.substring(0, 50) + "..."
                       : post.content}
-                  </p>
+                  </p> */}
                   <p className="card-text">
                     <small className="text-body-secondary">
-                      Category: <b>{capitalizeFirstLetter(post.cat)}</b>
+                      Category: <b>{capitalizeFirstLetter(post.category)}</b>
                     </small>
                   </p>
                   <Link to={`/post/${post.id}`}>Continue reading</Link>
