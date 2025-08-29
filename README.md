@@ -62,8 +62,8 @@ cd src
 npm start
 ```
 
-Open your browser at http://localhost:3000 to view the app.
-日本語: ブラウザで http://localhost:3000 を開いて実行確認してください。
+- Open your browser at http://localhost:3000 to view the app.
+- 日本語: ブラウザで http://localhost:3000 を開いて実行確認してください。
 
 ## Demo Screenshots / スクリーンショット
 
@@ -73,17 +73,8 @@ Open your browser at http://localhost:3000 to view the app.
 
 ## Author / 作者
 
-Victor — full-stack web developer 🚀
-日本語: Victor — フルスタック開発エンジニアです。
-GitHub Profile https://github.com/theunfeelingsoul
-
----
-
-#### Key improvements based on your structure:
-
-- Noted **SQLite backend**, since that's the active integration.
-- Used proper folder naming and path formatting.
-- Embedded screenshots via HTML `<img>` to control width (~300px).
-- Made core sections bilingual for accessibility to Japanese-speaking employers.
+- Victor — full-stack web developer 🚀
+- 日本語: Victor — フルスタック開発エンジニアです。
+- GitHub Profile https://github.com/theunfeelingsoul
 
 ---
